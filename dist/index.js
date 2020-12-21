@@ -29,7 +29,7 @@ const fs = __webpack_require__(5747).promises;
 const os = __webpack_require__(2087);
 const path = __webpack_require__(5622);
 const axios = __webpack_require__(6545);
-const {exec} = __webpack_require__(3129);
+const childProcess = __webpack_require__(3129);
 
 // External
 const core = __webpack_require__(2186);
@@ -86,8 +86,25 @@ async function latestVersion () {
 async function run () {
   try {
     // Gather GitHub Actions inputs
-    let version = core.getInput('terratag_version');
-    const cliArgs = core.getInput('cli_args');
+    let version = core.getInput('terratagVersion');
+
+    const cliArgs = [`-tags=${core.getInput('tags')}`];
+    const dir = core.getInput('dir');
+    if (dir) {
+      cliArgs.push(`-dir=${dir}`);
+    }
+    const boolFlag = (flagName) => {
+      const value = core.getInput(flagName);
+      if (value) {
+        if (value !== "true" && value !== "false") {
+          throw new Error(`${flagName} can only accept 'true' or 'false'`);
+        }
+        cliArgs.push(`-${flagName}=${value}`);
+      }
+    }
+    boolFlag('skipTerratagFiles');
+    boolFlag('verbose');
+    boolFlag('rename');
 
     // Gather OS details
     const osPlatform = os.platform();
@@ -112,20 +129,19 @@ async function run () {
     core.addPath(pathToCLI);
     console.info("Terratag installed, invoking");
 
-    await new Promise((resolve, reject)=>{
-      exec(`${pathToCLI}/terratag ${cliArgs}`, (error, stdout, stderr) => {
-        if (error) {
-          reject(error);
-        }
-        if (stderr) {
-          console.error(stderr);
-          core.error(stderr);
-        }
-        console.info(stdout);
-        core.info(stdout);
-        resolve();
-      });
+    const {error, stdout, stderr} = childProcess.spawnSync(`${pathToCLI}/terratag`, cliArgs, {
+      stdio: 'pipe',
+      encoding: 'utf-8'
     });
+    if (error) {
+      throw error;
+    }
+    if (stderr) {
+      console.error(stderr);
+      core.error(stderr);
+    }
+    console.info(stdout);
+    core.info(stdout);
   } catch (error) {
     core.error(error);
     throw error;
