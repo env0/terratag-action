@@ -41,7 +41,7 @@ async function downloadCLI(url: string): Promise<string> {
 async function latestVersion(): Promise<string> {
   const response = await axios.get('https://github.com/env0/terratag/releases');
   if (response.status !== 200) {
-    throw new Error(`Unable to fetch terratag releases`);
+    throw new Error(`Unable to fetch terratag releases: response ${response.status}: ${response.data}`);
   }
   const regex = new RegExp('href="/env0/terratag/releases/tag/v(.{1,15})"');
   const found = response.data.match(regex);

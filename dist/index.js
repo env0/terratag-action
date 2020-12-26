@@ -8730,7 +8730,7 @@ function latestVersion() {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield axios_1.default.get('https://github.com/env0/terratag/releases');
         if (response.status !== 200) {
-            throw new Error(`Unable to fetch terratag releases`);
+            throw new Error(`Unable to fetch terratag releases: response ${response.status}: ${response.data}`);
         }
         const regex = new RegExp('href="/env0/terratag/releases/tag/v(.{1,15})"');
         const found = response.data.match(regex);
