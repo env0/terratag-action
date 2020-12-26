@@ -8796,19 +8796,25 @@ function run() {
             // Add to path
             core_1.default.addPath(pathToCLI);
             console.info("Terratag installed, invoking");
-            const { error, stdout, stderr } = child_process_1.default.spawnSync(`${pathToCLI}/terratag`, cliArgs, {
-                stdio: 'pipe',
-                encoding: 'utf-8'
+            yield new Promise((resolve, reject) => {
+                const child = child_process_1.default.spawn(`${pathToCLI}/terratag`, cliArgs);
+                child.stdout.on('data', data => {
+                    console.info(data);
+                    core_1.default.info(data);
+                });
+                child.stderr.on('data', data => {
+                    console.error(data);
+                    core_1.default.error(data);
+                });
+                child.on('close', code => {
+                    if (code === 0) {
+                        resolve();
+                    }
+                    else {
+                        reject(new Error(`Terratag cli exited with code ${code}`));
+                    }
+                });
             });
-            if (error) {
-                throw error;
-            }
-            if (stderr) {
-                console.error(stderr);
-                core_1.default.error(stderr);
-            }
-            console.info(stdout);
-            core_1.default.info(stdout);
         }
         catch (error) {
             core_1.default.error(error);

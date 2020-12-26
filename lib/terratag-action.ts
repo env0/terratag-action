@@ -109,19 +109,24 @@ export default async function run(): Promise<void> {
     core.addPath(pathToCLI);
     console.info("Terratag installed, invoking");
 
-    const {error, stdout, stderr} = childProcess.spawnSync(`${pathToCLI}/terratag`, cliArgs, {
-      stdio: 'pipe',
-      encoding: 'utf-8'
+    await new Promise<void>((resolve, reject)=>{
+      const child = childProcess.spawn(`${pathToCLI}/terratag`, cliArgs);
+      child.stdout.on('data', data=>{
+        console.info(data);
+        core.info(data);
+      });
+      child.stderr.on('data', data=>{
+        console.error(data);
+        core.error(data);
+      });
+      child.on('close', code=>{
+        if (code === 0) {
+          resolve();
+        } else {
+          reject(new Error(`Terratag cli exited with code ${code}`));
+        }
+      });
     });
-    if (error) {
-      throw error;
-    }
-    if (stderr) {
-      console.error(stderr);
-      core.error(stderr);
-    }
-    console.info(stdout);
-    core.info(stdout);
   } catch (error) {
     core.error(error);
     throw error;
