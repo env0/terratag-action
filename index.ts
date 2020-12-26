@@ -1,6 +1,6 @@
-const core = require('@actions/core');
+import core from '@actions/core';
 
-const terratagAction = require('./lib/terratag-action');
+import terratagAction from './lib/terratag-action';
 
 (async () => {
   try {
