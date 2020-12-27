@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "lib": [
+      "es2015"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": false,
+    "experimentalDecorators": true,
+
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
+    "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
+    "noUnusedParameters": true,  /* Report errors on unused parameters. */
+    "noUnusedLocals": true
+  },
+  "include": [
+    "*.ts",
+    "lib/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "attic",
+  ]
+}
