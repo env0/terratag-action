@@ -7,6 +7,7 @@ A GitHub Action for [Terratag](https://github.com/env0/terratag)
 ```yaml
 jobs:
   tag:
+    runs-on: ubuntu-latest
     steps:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
