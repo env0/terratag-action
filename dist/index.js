@@ -8700,8 +8700,8 @@ const tool_cache_1 = __importDefault(__webpack_require__(7784));
 // return value in [amd64, 386, arm]
 function mapArch(arch) {
     const mappings = {
-        x32: '386',
-        x64: 'amd64'
+        x32: "386",
+        x64: "amd64",
     };
     return mappings[arch] || arch;
 }
@@ -8709,7 +8709,7 @@ function mapArch(arch) {
 // return value in [darwin, linux, windows]
 function mapOS(os) {
     const mappings = {
-        win32: 'windows'
+        win32: "windows",
     };
     return mappings[os] || os;
 }
@@ -8717,7 +8717,7 @@ function downloadCLI(url) {
     return __awaiter(this, void 0, void 0, function* () {
         core_1.default.debug(`Downloading Terratag CLI from ${url}`);
         const pathToCLITar = yield tool_cache_1.default.downloadTool(url);
-        core_1.default.debug('Extracting Terratag CLI zip file');
+        core_1.default.debug("Extracting Terratag CLI zip file");
         const pathToCLI = yield tool_cache_1.default.extractTar(pathToCLITar);
         core_1.default.debug(`Terratag CLI path is ${pathToCLI}.`);
         if (!pathToCLITar || !pathToCLI) {
@@ -8728,7 +8728,7 @@ function downloadCLI(url) {
 }
 function latestVersion() {
     return __awaiter(this, void 0, void 0, function* () {
-        const response = yield axios_1.default.get('https://github.com/env0/terratag/releases');
+        const response = yield axios_1.default.get("https://github.com/env0/terratag/releases");
         if (response.status !== 200) {
             throw new Error(`Unable to fetch terratag releases: response ${response.status}: ${response.data}`);
         }
@@ -8741,8 +8741,8 @@ function latestVersion() {
     });
 }
 function cliArgsFromActionInputs() {
-    const cliArgs = [`-tags=${core_1.default.getInput('tags')}`];
-    const dir = core_1.default.getInput('dir');
+    const cliArgs = [`-tags=${core_1.default.getInput("tags")}`];
+    const dir = core_1.default.getInput("dir");
     if (dir) {
         cliArgs.push(`-dir=${dir}`);
     }
@@ -8755,14 +8755,14 @@ function cliArgsFromActionInputs() {
             cliArgs.push(`-${flagName}=${value}`);
         }
     };
-    boolFlag('skipTerratagFiles');
-    boolFlag('verbose');
-    boolFlag('rename');
+    boolFlag("skipTerratagFiles");
+    boolFlag("verbose");
+    boolFlag("rename");
     return cliArgs;
 }
 function terratagVersionFromActionInputs() {
     return __awaiter(this, void 0, void 0, function* () {
-        const version = core_1.default.getInput('terratagVersion');
+        const version = core_1.default.getInput("terratagVersion");
         if (version === "latest") {
             return yield latestVersion();
         }
@@ -8772,7 +8772,7 @@ function terratagVersionFromActionInputs() {
 function terratagVersionDownloadURL(version) {
     const osPlatform = os_1.default.platform();
     const osArch = os_1.default.arch();
-    if (osArch !== 'x64') {
+    if (osArch !== "x64") {
         throw new Error("Terratag action currently only supports x64/amd64");
     }
     const platform = mapOS(osPlatform);
@@ -8798,15 +8798,15 @@ function run() {
             console.info("Terratag installed, invoking");
             yield new Promise((resolve, reject) => {
                 const child = child_process_1.default.spawn(`${pathToCLI}/terratag`, cliArgs);
-                child.stdout.on('data', data => {
+                child.stdout.on("data", (data) => {
                     console.info(data);
                     core_1.default.info(data);
                 });
-                child.stderr.on('data', data => {
+                child.stderr.on("data", (data) => {
                     console.error(data);
                     core_1.default.error(data);
                 });
-                child.on('close', code => {
+                child.on("close", (code) => {
                     if (code === 0) {
                         resolve();
                     }
