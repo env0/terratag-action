@@ -1,6 +1,6 @@
-import core from "@actions/core";
+import core from '@actions/core';
 
-import terratagAction from "./lib/terratag-action";
+import terratagAction from './lib/terratag-action';
 
 (async () => {
   try {
