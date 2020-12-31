@@ -12,7 +12,6 @@ const mockedTC = tc as jest.Mocked<typeof tc>;
 import run from './terratag-action';
 
 test('simple end to end, latest terratag', async () => {
-  jest.resetAllMocks();
   mockedCore.getInput.mockImplementation((name: string) => {
     const inputs: { [key: string]: string } = { terratagVersion: 'latest', tags: JSON.stringify({ a: 'b' }) };
     return inputs[name];
@@ -44,7 +43,6 @@ test('simple end to end, latest terratag', async () => {
 });
 
 test('simple end to end, specific terratag', async () => {
-  jest.resetAllMocks();
   mockedCore.getInput.mockImplementation((name: string) => {
     const inputs: { [key: string]: string } = { terratagVersion: '5.6.7', tags: JSON.stringify({ a: 'b' }) };
     return inputs[name];
