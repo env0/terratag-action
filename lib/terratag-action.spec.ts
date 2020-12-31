@@ -1,12 +1,12 @@
+import axios from 'axios';
+import childProcess from 'child_process';
+import core from '@actions/core';
+import tc from '@actions/tool-cache';
 jest.mock('axios');
 jest.mock('child_process');
-import axios from 'axios';
 const mockedAxios = axios as jest.Mocked<typeof axios>;
-import childProcess from 'child_process';
 const mockedChildProcess = childProcess as jest.Mocked<typeof childProcess>;
-import core from '@actions/core';
 const mockedCore = core as jest.Mocked<typeof core>;
-import tc from '@actions/tool-cache';
 const mockedTC = tc as jest.Mocked<typeof tc>;
 
 import run from './terratag-action';
@@ -26,7 +26,7 @@ describe('terratag action', () => {
     });
     mockedChildProcess.spawn.mockReturnValue(spawn as any);
   });
-  
+
   test('simple end to end, latest terratag', async () => {
     mockedCore.getInput.mockImplementation((name: string) => {
       const inputs: { [key: string]: string } = { terratagVersion: 'latest', tags: JSON.stringify({ a: 'b' }) };
