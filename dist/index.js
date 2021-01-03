@@ -8735,7 +8735,7 @@ function latestVersion() {
         const regex = new RegExp('href="/env0/terratag/releases/tag/v(.{1,15})"');
         const found = response.data.match(regex);
         if (!found) {
-            throw new Error("Unable to determine latest terratag version");
+            throw new Error('Unable to determine latest terratag version');
         }
         return found[1];
     });
@@ -8749,7 +8749,7 @@ function cliArgsFromActionInputs() {
     const boolFlag = (flagName) => {
         const value = core_1.default.getInput(flagName);
         if (value) {
-            if (value !== "true" && value !== "false") {
+            if (value !== 'true' && value !== 'false') {
                 throw new Error(`${flagName} can only accept 'true' or 'false'`);
             }
             cliArgs.push(`-${flagName}=${value}`);
@@ -8763,7 +8763,7 @@ function cliArgsFromActionInputs() {
 function terratagVersionFromActionInputs() {
     return __awaiter(this, void 0, void 0, function* () {
         const version = core_1.default.getInput('terratagVersion');
-        if (version === "latest") {
+        if (version === 'latest') {
             return yield latestVersion();
         }
         return version;
@@ -8773,7 +8773,7 @@ function terratagVersionDownloadURL(version) {
     const osPlatform = os_1.default.platform();
     const osArch = os_1.default.arch();
     if (osArch !== 'x64') {
-        throw new Error("Terratag action currently only supports x64/amd64");
+        throw new Error('Terratag action currently only supports x64/amd64');
     }
     const platform = mapOS(osPlatform);
     const arch = mapArch(osArch);
@@ -8795,7 +8795,7 @@ function run() {
             core_1.default.info(`Successfully installed terratag ${version}`);
             // Add to path
             core_1.default.addPath(pathToCLI);
-            console.info("Terratag installed, invoking");
+            console.info('Terratag installed, invoking');
             yield new Promise((resolve, reject) => {
                 const child = child_process_1.default.spawn(`${pathToCLI}/terratag`, cliArgs);
                 child.stdout.on('data', data => {

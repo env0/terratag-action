@@ -7,7 +7,7 @@ import tc from '@actions/tool-cache';
 // arch in [arm, x32, x64...] (https://nodejs.org/api/os.html#os_os_arch)
 // return value in [amd64, 386, arm]
 function mapArch(arch: string): string {
-  const mappings: {[key: string]: string} = {
+  const mappings: { [key: string]: string } = {
     x32: '386',
     x64: 'amd64'
   };
@@ -17,7 +17,7 @@ function mapArch(arch: string): string {
 // os in [darwin, linux, win32...] (https://nodejs.org/api/os.html#os_os_platform)
 // return value in [darwin, linux, windows]
 function mapOS(os: string): string {
-  const mappings: {[key: string]: string} = {
+  const mappings: { [key: string]: string } = {
     win32: 'windows'
   };
   return mappings[os] || os;
@@ -46,7 +46,7 @@ async function latestVersion(): Promise<string> {
   const regex = new RegExp('href="/env0/terratag/releases/tag/v(.{1,15})"');
   const found = response.data.match(regex);
   if (!found) {
-    throw new Error("Unable to determine latest terratag version");
+    throw new Error('Unable to determine latest terratag version');
   }
   return found[1];
 }
@@ -57,15 +57,15 @@ function cliArgsFromActionInputs(): string[] {
   if (dir) {
     cliArgs.push(`-dir=${dir}`);
   }
-  const boolFlag = (flagName:string) => {
+  const boolFlag = (flagName: string) => {
     const value = core.getInput(flagName);
     if (value) {
-      if (value !== "true" && value !== "false") {
+      if (value !== 'true' && value !== 'false') {
         throw new Error(`${flagName} can only accept 'true' or 'false'`);
       }
       cliArgs.push(`-${flagName}=${value}`);
     }
-  }
+  };
   boolFlag('skipTerratagFiles');
   boolFlag('verbose');
   boolFlag('rename');
@@ -74,7 +74,7 @@ function cliArgsFromActionInputs(): string[] {
 
 async function terratagVersionFromActionInputs(): Promise<string> {
   const version = core.getInput('terratagVersion');
-  if (version === "latest") {
+  if (version === 'latest') {
     return await latestVersion();
   }
   return version;
@@ -84,7 +84,7 @@ function terratagVersionDownloadURL(version: string): string {
   const osPlatform = os.platform();
   const osArch = os.arch();
   if (osArch !== 'x64') {
-      throw new Error("Terratag action currently only supports x64/amd64");
+    throw new Error('Terratag action currently only supports x64/amd64');
   }
 
   const platform = mapOS(osPlatform);
@@ -107,19 +107,19 @@ export default async function run(): Promise<void> {
     core.info(`Successfully installed terratag ${version}`);
     // Add to path
     core.addPath(pathToCLI);
-    console.info("Terratag installed, invoking");
+    console.info('Terratag installed, invoking');
 
-    await new Promise<void>((resolve, reject)=>{
+    await new Promise<void>((resolve, reject) => {
       const child = childProcess.spawn(`${pathToCLI}/terratag`, cliArgs);
-      child.stdout.on('data', data=>{
+      child.stdout.on('data', data => {
         console.info(data);
         core.info(data);
       });
-      child.stderr.on('data', data=>{
+      child.stderr.on('data', data => {
         console.error(data);
         core.error(data);
       });
-      child.on('close', code=>{
+      child.on('close', code => {
         if (code === 0) {
           resolve();
         } else {
