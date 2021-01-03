@@ -1,6 +1,6 @@
-name: 'env0 - Run Terratag'
-description: 'Sets up and runs Terratag CLI in your GitHub Actions workflow.'
-author: 'env0, Inc.'
+name: 'Terratag by env0'
+description: 'Set up and runs Terratag in your GitHub Actions workflow.'
+author: 'env0'
 inputs:
   tags:
     description: 'Strigified JSON object of the tags to add'
