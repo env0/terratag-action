@@ -20,7 +20,7 @@ jobs:
         run: |
             cd test/fixture/terraform_13_14/aws_autoscaling_group/input && terraform init
 
-      - uses: env0/terratag-action@v2
+      - uses: env0/terratag-action
         with:
           tags: |
             {
