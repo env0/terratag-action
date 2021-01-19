@@ -18,7 +18,7 @@ jobs:
           # more setup-terraform configuration. See https://github.com/hashicorp/setup-terraform#usage
       - name: run terraform init
         run: |
-            cd test/fixture/terraform_13_14/aws_autoscaling_group/input && terraform init
+            cd path/to/terraform/files && terraform init
 
       - uses: env0/terratag-action
         with:
