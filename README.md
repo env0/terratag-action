@@ -20,7 +20,7 @@ jobs:
         run: |
             cd path/to/terraform/files && terraform init
 
-      - uses: env0/terratag-action
+      - uses: env0/terratag-action@main
         with:
           tags: |
             {
