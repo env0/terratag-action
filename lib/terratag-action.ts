@@ -1,7 +1,7 @@
 import os from 'os';
 import axios from 'axios';
 import childProcess from 'child_process';
-import core from '@actions/core';
+import * as core from '@actions/core';
 import tc from '@actions/tool-cache';
 
 // arch in [arm, x32, x64...] (https://nodejs.org/api/os.html#os_os_arch)
@@ -128,8 +128,7 @@ export default async function run(): Promise<void> {
       });
     });
   } catch (error) {
-    // core.info('aaaa');
-    // core.error((error as Error).message);
+    core.error((error as Error).toString());
     throw error;
   }
 }
