@@ -9525,7 +9525,6 @@ const core = __importStar(__webpack_require__(2186));
 const terratag_action_1 = __importDefault(__webpack_require__(5978));
 (() => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        core.info('blablabla2');
         yield (0, terratag_action_1.default)();
     }
     catch (error) {
@@ -9679,8 +9678,6 @@ function run() {
             // Add to path
             core.addPath(pathToCLI);
             console.info('Terratag installed, invoking');
-            console.info(`${pathToCLI}/terratag`);
-            console.info(cliArgs);
             yield new Promise((resolve, reject) => {
                 const child = child_process_1.default.spawn(`${pathToCLI}/terratag`, cliArgs);
                 child.stdout.on('data', data => {
