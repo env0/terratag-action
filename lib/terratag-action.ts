@@ -108,7 +108,8 @@ export default async function run(): Promise<void> {
     // Add to path
     core.addPath(pathToCLI);
     console.info('Terratag installed, invoking');
-
+    console.info(`${pathToCLI}/terratag`);
+    console.info(cliArgs);
     await new Promise<void>((resolve, reject) => {
       const child = childProcess.spawn(`${pathToCLI}/terratag`, cliArgs);
       child.stdout.on('data', data => {

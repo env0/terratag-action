@@ -9679,6 +9679,8 @@ function run() {
             // Add to path
             core.addPath(pathToCLI);
             console.info('Terratag installed, invoking');
+            console.info(`${pathToCLI}/terratag`);
+            console.info(cliArgs);
             yield new Promise((resolve, reject) => {
                 const child = child_process_1.default.spawn(`${pathToCLI}/terratag`, cliArgs);
                 child.stdout.on('data', data => {
