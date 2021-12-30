@@ -6,6 +6,7 @@ import terratagAction from './lib/terratag-action';
   try {
     await terratagAction();
   } catch (error) {
+    console.info('blablabla');
     console.error(`Action JS error: ${error}`);
     core.setFailed(error.message);
   }
