@@ -128,7 +128,7 @@ export default async function run(): Promise<void> {
       });
     });
   } catch (error) {
-    core.error(error);
+    core.error(error as Error);
     throw error;
   }
 }
