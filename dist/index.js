@@ -9700,8 +9700,8 @@ function run() {
             });
         }
         catch (error) {
-            core.info('aaaa');
-            core.error(error.message);
+            // core.info('aaaa');
+            // core.error((error as Error).message);
             throw error;
         }
     });

@@ -128,8 +128,8 @@ export default async function run(): Promise<void> {
       });
     });
   } catch (error) {
-    core.info('aaaa');
-    core.error((error as Error).message);
+    // core.info('aaaa');
+    // core.error((error as Error).message);
     throw error;
   }
 }
