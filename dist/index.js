@@ -9684,12 +9684,12 @@ function run() {
             yield new Promise((resolve, reject) => {
                 const child = child_process_1.default.spawn(`${pathToCLI}/terratag`, cliArgs);
                 child.stdout.on('data', data => {
-                    console.info(data);
-                    core.info(data);
+                    console.info(data.toString());
+                    core.info(data.toString());
                 });
                 child.stderr.on('data', data => {
-                    console.error(data);
-                    core.error(data);
+                    console.error(data.toString());
+                    core.error(data.toString());
                 });
                 child.on('close', code => {
                     if (code === 0) {
