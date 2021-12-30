@@ -1,8 +1,8 @@
 import os from 'os';
 import axios from 'axios';
 import childProcess from 'child_process';
-import core from '@actions/core';
-import tc from '@actions/tool-cache';
+import * as core from '@actions/core';
+import * as tc from '@actions/tool-cache';
 
 // arch in [arm, x32, x64...] (https://nodejs.org/api/os.html#os_os_arch)
 // return value in [amd64, 386, arm]
@@ -108,16 +108,15 @@ export default async function run(): Promise<void> {
     // Add to path
     core.addPath(pathToCLI);
     console.info('Terratag installed, invoking');
-
     await new Promise<void>((resolve, reject) => {
       const child = childProcess.spawn(`${pathToCLI}/terratag`, cliArgs);
       child.stdout.on('data', data => {
-        console.info(data);
-        core.info(data);
+        console.info(data.toString());
+        core.info(data.toString());
       });
       child.stderr.on('data', data => {
-        console.error(data);
-        core.error(data);
+        console.error(data.toString());
+        core.error(data.toString());
       });
       child.on('close', code => {
         if (code === 0) {
@@ -128,7 +127,7 @@ export default async function run(): Promise<void> {
       });
     });
   } catch (error) {
-    core.error(error);
+    core.error((error as Error).toString());
     throw error;
   }
 }
