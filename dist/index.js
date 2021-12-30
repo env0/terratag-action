@@ -9542,25 +9542,6 @@ const terratag_action_1 = __importDefault(__webpack_require__(5978));
 
 "use strict";
 
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -9577,7 +9558,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const os_1 = __importDefault(__webpack_require__(2087));
 const axios_1 = __importDefault(__webpack_require__(6545));
 const child_process_1 = __importDefault(__webpack_require__(3129));
-const core = __importStar(__webpack_require__(2186));
+const core_1 = __importDefault(__webpack_require__(2186));
 const tool_cache_1 = __importDefault(__webpack_require__(7784));
 // arch in [arm, x32, x64...] (https://nodejs.org/api/os.html#os_os_arch)
 // return value in [amd64, 386, arm]
@@ -9598,11 +9579,11 @@ function mapOS(os) {
 }
 function downloadCLI(url) {
     return __awaiter(this, void 0, void 0, function* () {
-        core.debug(`Downloading Terratag CLI from ${url}`);
+        core_1.default.debug(`Downloading Terratag CLI from ${url}`);
         const pathToCLITar = yield tool_cache_1.default.downloadTool(url);
-        core.debug('Extracting Terratag CLI zip file');
+        core_1.default.debug('Extracting Terratag CLI zip file');
         const pathToCLI = yield tool_cache_1.default.extractTar(pathToCLITar);
-        core.debug(`Terratag CLI path is ${pathToCLI}.`);
+        core_1.default.debug(`Terratag CLI path is ${pathToCLI}.`);
         if (!pathToCLITar || !pathToCLI) {
             throw new Error(`Unable to download Terratag from ${url}`);
         }
@@ -9624,13 +9605,13 @@ function latestVersion() {
     });
 }
 function cliArgsFromActionInputs() {
-    const cliArgs = [`-tags=${core.getInput('tags')}`];
-    const dir = core.getInput('dir');
+    const cliArgs = [`-tags=${core_1.default.getInput('tags')}`];
+    const dir = core_1.default.getInput('dir');
     if (dir) {
         cliArgs.push(`-dir=${dir}`);
     }
     const boolFlag = (flagName) => {
-        const value = core.getInput(flagName);
+        const value = core_1.default.getInput(flagName);
         if (value) {
             if (value !== 'true' && value !== 'false') {
                 throw new Error(`${flagName} can only accept 'true' or 'false'`);
@@ -9645,7 +9626,7 @@ function cliArgsFromActionInputs() {
 }
 function terratagVersionFromActionInputs() {
     return __awaiter(this, void 0, void 0, function* () {
-        const version = core.getInput('terratagVersion');
+        const version = core_1.default.getInput('terratagVersion');
         if (version === 'latest') {
             return yield latestVersion();
         }
@@ -9661,7 +9642,7 @@ function terratagVersionDownloadURL(version) {
     const platform = mapOS(osPlatform);
     const arch = mapArch(osArch);
     console.info(`Getting build for terratag version ${version}: ${platform} ${arch}`);
-    core.debug(`Getting build for terratag version ${version}: ${platform} ${arch}`);
+    core_1.default.debug(`Getting build for terratag version ${version}: ${platform} ${arch}`);
     // Download requested version
     const url = `https://github.com/env0/terratag/releases/download/v${version}/terratag_${version}_${platform}_${arch}.tar.gz`;
     return url;
@@ -9675,19 +9656,19 @@ function run() {
             const downloadURL = terratagVersionDownloadURL(version);
             console.info(`Download url: ${downloadURL}`);
             const pathToCLI = yield downloadCLI(downloadURL);
-            core.info(`Successfully installed terratag ${version}`);
+            core_1.default.info(`Successfully installed terratag ${version}`);
             // Add to path
-            core.addPath(pathToCLI);
+            core_1.default.addPath(pathToCLI);
             console.info('Terratag installed, invoking');
             yield new Promise((resolve, reject) => {
                 const child = child_process_1.default.spawn(`${pathToCLI}/terratag`, cliArgs);
                 child.stdout.on('data', data => {
                     console.info(data);
-                    core.info(data);
+                    core_1.default.info(data);
                 });
                 child.stderr.on('data', data => {
                     console.error(data);
-                    core.error(data);
+                    core_1.default.error(data);
                 });
                 child.on('close', code => {
                     if (code === 0) {
