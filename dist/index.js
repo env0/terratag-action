@@ -9577,7 +9577,7 @@ const os_1 = __importDefault(__webpack_require__(2087));
 const axios_1 = __importDefault(__webpack_require__(6545));
 const child_process_1 = __importDefault(__webpack_require__(3129));
 const core = __importStar(__webpack_require__(2186));
-const tool_cache_1 = __importDefault(__webpack_require__(7784));
+const tc = __importStar(__webpack_require__(7784));
 // arch in [arm, x32, x64...] (https://nodejs.org/api/os.html#os_os_arch)
 // return value in [amd64, 386, arm]
 function mapArch(arch) {
@@ -9598,9 +9598,9 @@ function mapOS(os) {
 function downloadCLI(url) {
     return __awaiter(this, void 0, void 0, function* () {
         core.debug(`Downloading Terratag CLI from ${url}`);
-        const pathToCLITar = yield tool_cache_1.default.downloadTool(url);
+        const pathToCLITar = yield tc.downloadTool(url);
         core.debug('Extracting Terratag CLI zip file');
-        const pathToCLI = yield tool_cache_1.default.extractTar(pathToCLITar);
+        const pathToCLI = yield tc.extractTar(pathToCLITar);
         core.debug(`Terratag CLI path is ${pathToCLI}.`);
         if (!pathToCLITar || !pathToCLI) {
             throw new Error(`Unable to download Terratag from ${url}`);
