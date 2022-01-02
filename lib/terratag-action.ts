@@ -1,8 +1,8 @@
 import os from 'os';
 import axios from 'axios';
 import childProcess from 'child_process';
-import * as core from '@actions/core';
-import * as tc from '@actions/tool-cache';
+import core from '@actions/core';
+import tc from '@actions/tool-cache';
 
 // arch in [arm, x32, x64...] (https://nodejs.org/api/os.html#os_os_arch)
 // return value in [amd64, 386, arm]
