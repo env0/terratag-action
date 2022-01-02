@@ -1,6 +1,6 @@
 import axios from 'axios';
 import childProcess from 'child_process';
-import * as core from '@actions/core';
+import core from '@actions/core';
 import tc from '@actions/tool-cache';
 jest.mock('axios');
 jest.mock('child_process');
