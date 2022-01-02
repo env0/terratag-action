@@ -1,8 +1,8 @@
 import os from 'os';
 import axios from 'axios';
 import childProcess from 'child_process';
-import core from '@actions/core';
-import tc from '@actions/tool-cache';
+import * as core from '@actions/core';
+import * as tc from '@actions/tool-cache';
 
 // arch in [arm, x32, x64...] (https://nodejs.org/api/os.html#os_os_arch)
 // return value in [amd64, 386, arm]
@@ -89,7 +89,6 @@ function terratagVersionDownloadURL(version: string): string {
 
   const platform = mapOS(osPlatform);
   const arch = mapArch(osArch);
-  console.info(`Getting build for terratag version ${version}: ${platform} ${arch}`);
   core.debug(`Getting build for terratag version ${version}: ${platform} ${arch}`);
   // Download requested version
   const url = `https://github.com/env0/terratag/releases/download/v${version}/terratag_${version}_${platform}_${arch}.tar.gz`;
@@ -112,12 +111,12 @@ export default async function run(): Promise<void> {
     await new Promise<void>((resolve, reject) => {
       const child = childProcess.spawn(`${pathToCLI}/terratag`, cliArgs);
       child.stdout.on('data', data => {
-        console.info(data);
-        core.info(data);
+        console.info(data.toString());
+        core.info(data.toString());
       });
       child.stderr.on('data', data => {
-        console.error(data);
-        core.error(data);
+        console.error(data.toString());
+        core.error(data.toString());
       });
       child.on('close', code => {
         if (code === 0) {

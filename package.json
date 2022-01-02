@@ -6,6 +6,7 @@
   "publisher": "env0",
   "main": "index.js",
   "scripts": {
+    "start": "npm run build && node dist/index.js",
     "build": "ncc build index.ts --out dist",
     "test": "npx jest",
     "style": "npx prettier --write *.ts lib/*.ts"
