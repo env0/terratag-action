@@ -14,7 +14,6 @@
     "isolatedModules": true,
     "noEmit": false,
     "experimentalDecorators": true,
-    "sourceMap": true,
     "strict": true,
     "noImplicitAny": true,
     "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
