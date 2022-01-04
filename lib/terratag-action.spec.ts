@@ -54,7 +54,11 @@ describe('terratag action', () => {
     });
     it('should download terratag from expected url', () => {
       expect(mockedTC.downloadTool.mock.calls).toEqual([
-        [`https://github.com/env0/terratag/releases/download/v1.2.3/terratag_1.2.3_${mapOS(osPlatform)}_${mapArch(osArchitecture)}.tar.gz`]
+        [
+          `https://github.com/env0/terratag/releases/download/v1.2.3/terratag_1.2.3_${mapOS(osPlatform)}_${mapArch(
+            osArchitecture
+          )}.tar.gz`
+        ]
       ]);
     });
     it('should extract downloaded terratag', () => {
@@ -82,7 +86,11 @@ describe('terratag action', () => {
     });
     it('should download terratag from expected url', () => {
       expect(mockedTC.downloadTool.mock.calls).toEqual([
-        [`https://github.com/env0/terratag/releases/download/v5.6.7/terratag_5.6.7_${mapOS(osPlatform)}_${mapArch(osArchitecture)}.tar.gz`]
+        [
+          `https://github.com/env0/terratag/releases/download/v5.6.7/terratag_5.6.7_${mapOS(osPlatform)}_${mapArch(
+            osArchitecture
+          )}.tar.gz`
+        ]
       ]);
     });
     it('should extract downloaded terratag', () => {
