@@ -4,6 +4,11 @@ import childProcess from 'child_process';
 import * as core from '@actions/core';
 import * as tc from '@actions/tool-cache';
 
+export const exportedForTesting = {
+  mapArch,
+  mapOS
+}
+
 // arch in [arm, x32, x64...] (https://nodejs.org/api/os.html#os_os_arch)
 // return value in [amd64, 386, arm]
 function mapArch(arch: string): string {
