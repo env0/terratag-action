@@ -1,17 +1,27 @@
+import os from 'os';
 import axios from 'axios';
 import childProcess from 'child_process';
-import core from '@actions/core';
-import tc from '@actions/tool-cache';
+import * as core from '@actions/core';
+import * as tc from '@actions/tool-cache';
+import { exportedForTesting } from './terratag-action';
+
 jest.mock('axios');
 jest.mock('child_process');
+jest.mock('@actions/core');
+jest.mock('@actions/tool-cache');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 const mockedChildProcess = childProcess as jest.Mocked<typeof childProcess>;
 const mockedCore = core as jest.Mocked<typeof core>;
 const mockedTC = tc as jest.Mocked<typeof tc>;
 
+const { mapOS, mapArch } = exportedForTesting;
+
 import run from './terratag-action';
 
 describe('terratag action', () => {
+  const osPlatform = os.platform();
+  const osArchitecture = os.arch();
+
   beforeEach(() => {
     mockedTC.downloadTool.mockResolvedValue('FAKE PATH FOR DOWNLOADED TOOL TAR');
     mockedTC.extractTar.mockResolvedValue('FAKE PATH FOR EXTRACTED');
@@ -44,7 +54,11 @@ describe('terratag action', () => {
     });
     it('should download terratag from expected url', () => {
       expect(mockedTC.downloadTool.mock.calls).toEqual([
-        ['https://github.com/env0/terratag/releases/download/v1.2.3/terratag_1.2.3_linux_amd64.tar.gz']
+        [
+          `https://github.com/env0/terratag/releases/download/v1.2.3/terratag_1.2.3_${mapOS(osPlatform)}_${mapArch(
+            osArchitecture
+          )}.tar.gz`
+        ]
       ]);
     });
     it('should extract downloaded terratag', () => {
@@ -72,7 +86,11 @@ describe('terratag action', () => {
     });
     it('should download terratag from expected url', () => {
       expect(mockedTC.downloadTool.mock.calls).toEqual([
-        ['https://github.com/env0/terratag/releases/download/v5.6.7/terratag_5.6.7_linux_amd64.tar.gz']
+        [
+          `https://github.com/env0/terratag/releases/download/v5.6.7/terratag_5.6.7_${mapOS(osPlatform)}_${mapArch(
+            osArchitecture
+          )}.tar.gz`
+        ]
       ]);
     });
     it('should extract downloaded terratag', () => {

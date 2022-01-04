@@ -1,0 +1,25 @@
+name: testing terratag action
+on: [push]
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.13.5
+          # more setup-terraform configuration. See https://github.com/hashicorp/setup-terraform#usage
+      - name: run terraform init
+        run: |
+            cd tests/fixtures && terraform init
+      - uses: ./
+        env: 
+            ACTIONS_STEP_DEBUG: ${{ secrets.ACTIONS_STEP_DEBUG }}
+        with:
+          tags: |
+            {
+              "env0_environment_id":"40907eff-cf7c-419a-8694-e1c6bf1d1168","env0_project_id":"43fd4ff1-8d37-4d9d-ac97-295bd850bf94"
+            }
+          dir: tests/fixtures
