@@ -1,5 +1,7 @@
 name: testing terratag action
 on: [push]
+permissions:
+  contents: read
 jobs:
   tag:
     runs-on: ubuntu-latest
