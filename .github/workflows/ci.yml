@@ -18,7 +18,7 @@ jobs:
         npm i
     - name: Style check
       run: |
-        npx prettier --check "*.ts" "lib/*.ts"
+        npx prettier@2 --check "*.ts" "lib/*.ts"
     - name: Unit test
       run: |
         npm run test
