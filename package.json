@@ -15,7 +15,7 @@
   "keywords": [],
   "author": "",
   "dependencies": {
-    "@actions/core": "3.0.0",
+    "@actions/core": "3.0.1",
     "@actions/tool-cache": "3.0.1",
     "axios": "1.21.0"
   },
@@ -23,7 +23,7 @@
     "@types/node": "26.6.6",
     "esbuild": "0.28.2",
     "husky": "9.1.7",
-    "typescript": "7.0.0",
+    "typescript": "7.0.2",
     "vitest": "5.1.0"
   }
 }
