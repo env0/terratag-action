@@ -34,5 +34,18 @@
       matchDepNames: ["node"],
       rangeStrategy: "replace",
     },
+    {
+      matchPackageNames: ["@actions/core", "@actions/tool-cache"],
+      matchUpdateTypes: ["major"],
+      enabled: false,
+    },
+    {
+      matchPackageNames: ["@types/node"],
+      allowedVersions: "<21",
+    },
+    {
+      matchPackageNames: ["typescript"],
+      allowedVersions: "<6",
+    },
   ],
 }
