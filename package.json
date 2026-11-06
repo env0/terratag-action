@@ -8,7 +8,7 @@
   "scripts": {
     "start": "npm run build && node dist/index.js",
     "build": "ncc build index.ts --out dist",
-    "test": "npx jest",
+    "test": "vitest run",
     "style": "npx prettier --write *.ts lib/*.ts",
     "prepare": "husky"
   },
@@ -20,12 +20,10 @@
     "axios": "^1.21.0"
   },
   "devDependencies": {
-    "@types/jest": "^30.0.0",
-    "@types/node": "^20.19.43",
+    "@types/node": "^26.6.6",
     "@vercel/ncc": "^0.45.0",
     "husky": "^9.1.7",
-    "jest": "^30.5.2",
-    "ts-jest": "^29.4.15",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^5.1.0"
   }
 }

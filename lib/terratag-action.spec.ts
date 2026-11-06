@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import os from 'os';
 import axios from 'axios';
 import childProcess from 'child_process';
@@ -5,14 +6,14 @@ import * as core from '@actions/core';
 import * as tc from '@actions/tool-cache';
 import { exportedForTesting } from './terratag-action';
 
-jest.mock('axios');
-jest.mock('child_process');
-jest.mock('@actions/core');
-jest.mock('@actions/tool-cache');
-const mockedAxios = axios as jest.Mocked<typeof axios>;
-const mockedChildProcess = childProcess as jest.Mocked<typeof childProcess>;
-const mockedCore = core as jest.Mocked<typeof core>;
-const mockedTC = tc as jest.Mocked<typeof tc>;
+vi.mock('axios');
+vi.mock('child_process');
+vi.mock('@actions/core');
+vi.mock('@actions/tool-cache');
+const mockedAxios = vi.mocked(axios);
+const mockedChildProcess = vi.mocked(childProcess);
+const mockedCore = vi.mocked(core);
+const mockedTC = vi.mocked(tc);
 
 const { mapOS, mapArch } = exportedForTesting;
 
@@ -26,9 +27,9 @@ describe('terratag action', () => {
     mockedTC.downloadTool.mockResolvedValue('FAKE PATH FOR DOWNLOADED TOOL TAR');
     mockedTC.extractTar.mockResolvedValue('FAKE PATH FOR EXTRACTED');
     const spawn = {
-      stdout: { on: jest.fn() },
-      stderr: { on: jest.fn() },
-      on: jest.fn()
+      stdout: { on: vi.fn() },
+      stderr: { on: vi.fn() },
+      on: vi.fn()
     };
     spawn.on.mockImplementation((eventName: string, callback: (code: number) => void) => {
       expect(eventName).toBe('close');
