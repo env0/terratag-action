@@ -7,7 +7,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run build && node dist/index.js",
-    "build": "ncc build index.ts --out dist",
+    "build": "tsc --noEmit && esbuild index.ts --bundle --platform=node --target=node20 --format=cjs --outfile=dist/index.js",
     "test": "vitest run",
     "style": "npx prettier --write *.ts lib/*.ts",
     "prepare": "husky"
@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@types/node": "^26.6.6",
-    "@vercel/ncc": "^0.45.0",
+    "esbuild": "^0.28.2",
     "husky": "^9.1.7",
     "typescript": "^7.0.0",
     "vitest": "^5.1.0"
