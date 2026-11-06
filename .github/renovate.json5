@@ -47,5 +47,14 @@
       matchPackageNames: ["typescript"],
       allowedVersions: "<6",
     },
+    {
+      matchDepNames: ["node"],
+      matchUpdateTypes: ["major"],
+      enabled: false,
+    },
+    {
+      matchDepNames: ["terraform"],
+      enabled: false,
+    },
   ],
 }
