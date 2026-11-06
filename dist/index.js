@@ -29084,9 +29084,9 @@ var require_es_set_tostringtag = __commonJS({
   }
 });
 
-// node_modules/axios/node_modules/form-data/lib/populate.js
+// node_modules/form-data/lib/populate.js
 var require_populate = __commonJS({
-  "node_modules/axios/node_modules/form-data/lib/populate.js"(exports2, module2) {
+  "node_modules/form-data/lib/populate.js"(exports2, module2) {
     "use strict";
     module2.exports = function(dst, src) {
       Object.keys(src).forEach(function(prop) {
@@ -29097,9 +29097,9 @@ var require_populate = __commonJS({
   }
 });
 
-// node_modules/axios/node_modules/form-data/lib/form_data.js
+// node_modules/form-data/lib/form_data.js
 var require_form_data = __commonJS({
-  "node_modules/axios/node_modules/form-data/lib/form_data.js"(exports2, module2) {
+  "node_modules/form-data/lib/form_data.js"(exports2, module2) {
     "use strict";
     var CombinedStream = require_combined_stream();
     var util5 = require("util");
@@ -29565,6 +29565,8 @@ var require_common = __commonJS({
       function createDebug(namespace) {
         let prevTime;
         let enableOverride = null;
+        let namespacesCache;
+        let enabledCache;
         function debug2(...args) {
           if (!debug2.enabled) {
             return;
@@ -29607,7 +29609,16 @@ var require_common = __commonJS({
         Object.defineProperty(debug2, "enabled", {
           enumerable: true,
           configurable: false,
-          get: () => enableOverride === null ? createDebug.enabled(namespace) : enableOverride,
+          get: () => {
+            if (enableOverride !== null) {
+              return enableOverride;
+            }
+            if (namespacesCache !== createDebug.namespaces) {
+              namespacesCache = createDebug.namespaces;
+              enabledCache = createDebug.enabled(namespace);
+            }
+            return enabledCache;
+          },
           set: (v) => {
             enableOverride = v;
           }
@@ -29624,51 +29635,66 @@ var require_common = __commonJS({
       }
       function enable(namespaces) {
         createDebug.save(namespaces);
+        createDebug.namespaces = namespaces;
         createDebug.names = [];
         createDebug.skips = [];
-        let i;
-        const split = (typeof namespaces === "string" ? namespaces : "").split(/[\s,]+/);
-        const len = split.length;
-        for (i = 0; i < len; i++) {
-          if (!split[i]) {
-            continue;
-          }
-          namespaces = split[i].replace(/\*/g, ".*?");
-          if (namespaces[0] === "-") {
-            createDebug.skips.push(new RegExp("^" + namespaces.substr(1) + "$"));
+        const split = (typeof namespaces === "string" ? namespaces : "").trim().replace(/\s+/g, ",").split(",").filter(Boolean);
+        for (const ns of split) {
+          if (ns[0] === "-") {
+            createDebug.skips.push(ns.slice(1));
           } else {
-            createDebug.names.push(new RegExp("^" + namespaces + "$"));
+            createDebug.names.push(ns);
           }
         }
       }
+      function matchesTemplate(search, template) {
+        let searchIndex = 0;
+        let templateIndex = 0;
+        let starIndex = -1;
+        let matchIndex = 0;
+        while (searchIndex < search.length) {
+          if (templateIndex < template.length && (template[templateIndex] === search[searchIndex] || template[templateIndex] === "*")) {
+            if (template[templateIndex] === "*") {
+              starIndex = templateIndex;
+              matchIndex = searchIndex;
+              templateIndex++;
+            } else {
+              searchIndex++;
+              templateIndex++;
+            }
+          } else if (starIndex !== -1) {
+            templateIndex = starIndex + 1;
+            matchIndex++;
+            searchIndex = matchIndex;
+          } else {
+            return false;
+          }
+        }
+        while (templateIndex < template.length && template[templateIndex] === "*") {
+          templateIndex++;
+        }
+        return templateIndex === template.length;
+      }
       function disable() {
         const namespaces = [
-          ...createDebug.names.map(toNamespace),
-          ...createDebug.skips.map(toNamespace).map((namespace) => "-" + namespace)
+          ...createDebug.names,
+          ...createDebug.skips.map((namespace) => "-" + namespace)
         ].join(",");
         createDebug.enable("");
         return namespaces;
       }
       function enabled(name) {
-        if (name[name.length - 1] === "*") {
-          return true;
-        }
-        let i;
-        let len;
-        for (i = 0, len = createDebug.skips.length; i < len; i++) {
-          if (createDebug.skips[i].test(name)) {
+        for (const skip of createDebug.skips) {
+          if (matchesTemplate(name, skip)) {
             return false;
           }
         }
-        for (i = 0, len = createDebug.names.length; i < len; i++) {
-          if (createDebug.names[i].test(name)) {
+        for (const ns of createDebug.names) {
+          if (matchesTemplate(name, ns)) {
             return true;
           }
         }
         return false;
-      }
-      function toNamespace(regexp) {
-        return regexp.toString().substring(2, regexp.toString().length - 2).replace(/\.\*\?$/, "*");
       }
       function coerce(val) {
         if (val instanceof Error) {
@@ -29788,10 +29814,11 @@ var require_browser = __commonJS({
       if (typeof navigator !== "undefined" && navigator.userAgent && navigator.userAgent.toLowerCase().match(/(edge|trident)\/(\d+)/)) {
         return false;
       }
+      let m;
       return typeof document !== "undefined" && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance || // Is firebug? http://stackoverflow.com/a/398120/376773
       typeof window !== "undefined" && window.console && (window.console.firebug || window.console.exception && window.console.table) || // Is firefox >= v31?
       // https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
-      typeof navigator !== "undefined" && navigator.userAgent && navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31 || // Double check webkit in userAgent just in case we are in a worker
+      typeof navigator !== "undefined" && navigator.userAgent && (m = navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/)) && parseInt(m[1], 10) >= 31 || // Double check webkit in userAgent just in case we are in a worker
       typeof navigator !== "undefined" && navigator.userAgent && navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/);
     }
     function formatArgs(args) {
@@ -29829,7 +29856,7 @@ var require_browser = __commonJS({
     function load() {
       let r;
       try {
-        r = exports2.storage.getItem("debug");
+        r = exports2.storage.getItem("debug") || exports2.storage.getItem("DEBUG");
       } catch (error2) {
       }
       if (!r && typeof process !== "undefined" && "env" in process) {
@@ -29997,7 +30024,7 @@ var require_node = __commonJS({
       return (/* @__PURE__ */ new Date()).toISOString() + " ";
     }
     function log(...args) {
-      return process.stderr.write(util5.format(...args) + "\n");
+      return process.stderr.write(util5.formatWithOptions(exports2.inspectOpts, ...args) + "\n");
     }
     function save(namespaces) {
       if (namespaces) {
