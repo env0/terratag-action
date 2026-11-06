@@ -15,15 +15,15 @@
   "keywords": [],
   "author": "",
   "dependencies": {
-    "@actions/core": "^3.0.0",
-    "@actions/tool-cache": "^3.0.1",
-    "axios": "^1.21.0"
+    "@actions/core": "3.0.1",
+    "@actions/tool-cache": "3.0.1",
+    "axios": "1.21.0"
   },
   "devDependencies": {
-    "@types/node": "^26.6.6",
-    "@vercel/ncc": "^0.45.0",
-    "husky": "^9.1.7",
-    "typescript": "^5.9.3",
-    "vitest": "^5.1.0"
+    "@types/node": "26.6.6",
+    "@vercel/ncc": "0.45.0",
+    "husky": "9.1.7",
+    "typescript": "5.9.3",
+    "vitest": "5.1.0"
   }
 }
